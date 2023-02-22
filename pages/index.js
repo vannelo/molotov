@@ -1,16 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
-import { InView, ThresholdMarker } from "react-intersection-observer";
+import { InView } from "react-intersection-observer";
 import { useRef, useState } from "react";
 
 export default function Home() {
+  const [isMenuActive, setIsMenuActive] = useState(false);
   const [topInView, setTopInView] = useState(false);
   const [bioInView, setBioInView] = useState(false);
   const [showsInView, setShowsInView] = useState(false);
   const [musicInView, setMusicInView] = useState(false);
   const [contactInView, setContactInView] = useState(false);
-  const topRef = useRef();
   const bioRef = useRef();
   const showsRef = useRef();
   const musicRef = useRef();
@@ -47,6 +47,11 @@ export default function Home() {
     contactRef?.current?.classList.add(styles.active);
   }
 
+  const goToSection = (id) => {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    setIsMenuActive(false);
+  };
+
   return (
     <>
       <Head>
@@ -59,22 +64,100 @@ export default function Home() {
         <link rel="icon" href="/icon.jpg" />
       </Head>
       <nav className={styles.navDesktop}>
-        <a href="#" ref={bioRef}>
+        <div
+          className={styles.link}
+          ref={bioRef}
+          onClick={() => goToSection("bio")}
+        >
           BIO
-        </a>
-        <a href="#" ref={showsRef}>
+        </div>
+        <div
+          className={styles.link}
+          ref={showsRef}
+          onClick={() => goToSection("shows")}
+        >
           SHOWS
-        </a>
-        <a href="#" ref={musicRef}>
+        </div>
+        <div
+          className={styles.link}
+          ref={musicRef}
+          onClick={() => goToSection("musica")}
+        >
           MÚSICA
-        </a>
-        <a href="#" ref={contactRef}>
+        </div>
+        <div
+          className={styles.link}
+          ref={contactRef}
+          onClick={() => goToSection("contacto")}
+        >
           CONTACTO
-        </a>
+        </div>
       </nav>
+      <nav className={styles.navMobile}>
+        <div className={styles.burger} onClick={() => setIsMenuActive(true)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="3em"
+            height="3em"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+            />
+          </svg>
+        </div>
+      </nav>
+      {isMenuActive && (
+        <div className={styles.menuMobile}>
+          <div className={styles.logo} onClick={() => goToSection("top")}>
+            <Image
+              src="/img/molotov.png"
+              alt="Molotov"
+              className={styles.img}
+              width={738}
+              height={468}
+              priority
+            />
+          </div>
+          <div
+            className={styles.link}
+            ref={bioRef}
+            onClick={() => goToSection("bio")}
+          >
+            BIO
+          </div>
+          <div
+            className={styles.link}
+            ref={showsRef}
+            onClick={() => goToSection("shows")}
+          >
+            SHOWS
+          </div>
+          <div
+            className={styles.link}
+            ref={musicRef}
+            onClick={() => goToSection("musica")}
+          >
+            MÚSICA
+          </div>
+          <div
+            className={styles.link}
+            ref={contactRef}
+            onClick={() => goToSection("contacto")}
+          >
+            CONTACTO
+          </div>
+        </div>
+      )}
       <div className={styles.socials}>
         <div className={styles.social}>
-          <a href="#">
+          <a
+            href="https://www.facebook.com/molotovoficial/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2em"
@@ -87,7 +170,11 @@ export default function Home() {
           </a>
         </div>
         <div className={styles.social}>
-          <a href="#">
+          <a
+            href="https://www.instagram.com/molotovbanda"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2em"
@@ -100,7 +187,11 @@ export default function Home() {
           </a>
         </div>
         <div className={styles.social}>
-          <a href="#">
+          <a
+            href="https://www.youtube.com/channel/UCGeB59j5PTFjyIyWBNCo71g"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2em"
@@ -113,7 +204,11 @@ export default function Home() {
           </a>
         </div>
         <div className={styles.social}>
-          <a href="#">
+          <a
+            href="https://www.tiktok.com/@molotovoficial?lang=en"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2em"
@@ -128,7 +223,7 @@ export default function Home() {
       </div>
       <main className={styles.main}>
         <InView onChange={setTopInView}>
-          <section className={styles.header}>
+          <section className={styles.header} id="top">
             <div className={styles.logo}>
               <Image
                 src="/img/molotov.png"
@@ -142,7 +237,7 @@ export default function Home() {
           </section>
         </InView>
         <InView onChange={setBioInView} threshold={0.4}>
-          <section className={styles.bio}>
+          <section className={styles.bio} id="bio">
             <div className={styles.overlay} />
             <div className={styles.content}>
               <div className={styles.image}>
@@ -165,7 +260,7 @@ export default function Home() {
           </section>
         </InView>
         <InView onChange={setShowsInView} threshold={0.7}>
-          <section className={styles.shows}>
+          <section className={styles.shows} id="shows">
             <div className="container">
               <div className={styles.title}>
                 <h2>SHOWS</h2>
@@ -177,21 +272,51 @@ export default function Home() {
                   <div className={styles.right}>FORO SOL</div>
                 </div>
                 <div className={styles.showsItem}>
-                  <div className={styles.left}>AGOSTO 1</div>
-                  <div className={styles.center}>CDMX</div>
-                  <div className={styles.right}>FORO SOL</div>
+                  <div className={styles.left}>AGOSTO 3</div>
+                  <div className={styles.center}>MONTERREY</div>
+                  <div className={styles.right}>PARQUE BICENTENARIO</div>
+                </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 7</div>
+                  <div className={styles.center}>GUADALAJARA</div>
+                  <div className={styles.right}>VIVE LATINO</div>
                 </div>
                 <div className={styles.showsItem}>
                   <div className={styles.left}>AGOSTO 1</div>
                   <div className={styles.center}>CDMX</div>
                   <div className={styles.right}>FORO SOL</div>
                 </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 3</div>
+                  <div className={styles.center}>MONTERREY</div>
+                  <div className={styles.right}>PARQUE BICENTENARIO</div>
+                </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 7</div>
+                  <div className={styles.center}>GUADALAJARA</div>
+                  <div className={styles.right}>VIVE LATINO</div>
+                </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 1</div>
+                  <div className={styles.center}>CDMX</div>
+                  <div className={styles.right}>FORO SOL</div>
+                </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 3</div>
+                  <div className={styles.center}>MONTERREY</div>
+                  <div className={styles.right}>PARQUE BICENTENARIO</div>
+                </div>
+                <div className={styles.showsItem}>
+                  <div className={styles.left}>AGOSTO 7</div>
+                  <div className={styles.center}>GUADALAJARA</div>
+                  <div className={styles.right}>VIVE LATINO</div>
+                </div>
               </div>
             </div>
           </section>
         </InView>
         <InView onChange={setMusicInView} threshold={0.3}>
-          <section className={styles.music}>
+          <section className={styles.music} id="musica">
             <div className="container">
               <div className={styles.title}>
                 <h2>MÚSICA</h2>
@@ -204,7 +329,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -216,7 +341,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -228,7 +353,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -240,7 +365,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -252,7 +377,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -264,7 +389,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -276,7 +401,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -288,7 +413,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -300,7 +425,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -312,7 +437,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -324,7 +449,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -336,7 +461,7 @@ export default function Home() {
                     width="100%"
                     height="352"
                     frameBorder="0"
-                    allowfullscreen=""
+                    allowFullScreen=""
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
                   ></iframe>
@@ -346,7 +471,7 @@ export default function Home() {
           </section>
         </InView>
         <InView onChange={setContactInView} threshold={0.2}>
-          <section className={styles.contact}>
+          <section className={styles.contact} id="contacto">
             <div className="container">
               <div className={styles.title}>
                 <h2>CONTACTO</h2>
